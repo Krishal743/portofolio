@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0a0a0a;
+  --color-surface: #111111;
+  --color-surface-2: #161616;
+  --color-edge: #232323;
+  --color-ink: #f0ede6;
+  --color-muted: #8a857a;
+  --color-faint: #5c574f;
+  --color-accent: #d9a441;
+  --color-accent-bright: #e8c07d;
+  --color-accent-dim: #b8892f;
+
+  --font-serif: "DM Serif Display", "Times New Roman", serif;
+  --font-sans: "DM Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "DM Mono", "SFMono-Regular", Menlo, monospace;
+
+  --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-specular: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-accent) 28%, transparent);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+}
+
+@layer utilities {
+  .container-portfolio {
+    margin-inline: auto;
+    width: min(100% - 3rem, 72rem);
+  }
+
+  .container-wide {
+    margin-inline: auto;
+    width: min(100% - 3rem, 84rem);
+  }
+
+  .section-pad {
+    padding-block: clamp(5rem, 12vh, 9rem);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Respect reduced motion globally: decouple CSS animations/transitions
+   unless the user explicitly opts in. JS-driven motion is gated in code. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
