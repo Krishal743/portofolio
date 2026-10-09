@@ -1,5 +1,5 @@
-import { lazy, Suspense, type ReactNode } from "react"
-import { motion, useReducedMotion } from "framer-motion"
+import { lazy, Suspense, useRef, type ReactNode } from "react"
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion"
 import GradualBlur from "./GradualBlur"
 import Constellation from "./Constellation"
 import SpecularButton from "./SpecularButton"
@@ -40,8 +40,25 @@ function FadeUp({
 
 export default function Hero({ ready = true }: { ready?: boolean }) {
   const reduce = useReducedMotion()
+  const sectionRef = useRef<HTMLElement>(null)
+
+  // Landing fades out as it travels toward the about section:
+  // progress 0 = hero pinned to the top of the viewport,
+  // progress 1 = hero's bottom edge has reached the top (fully gone).
+  // Faded by 70% so the last stretch isn't a half-visible ghost.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  })
+  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
+
   return (
-    <section id="hero" className="relative min-h-[100svh] overflow-hidden">
+    <motion.section
+      ref={sectionRef}
+      id="hero"
+      style={{ opacity }}
+      className="relative min-h-[100svh] overflow-hidden"
+    >
       {/* ambient liquid ether (desktop + motion-favouring users only) */}
       {!reduce && (
         <div className="pointer-events-none absolute inset-0 hidden opacity-75 lg:block" aria-hidden="true">
@@ -209,6 +226,6 @@ export default function Hero({ ready = true }: { ready?: boolean }) {
           transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
         />
       </motion.a>
-    </section>
+    </motion.section>
   )
 }

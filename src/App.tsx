@@ -9,7 +9,6 @@ import Contact from "@/components/Contact"
 import Footer from "@/components/Footer"
 import Intro from "@/components/Intro"
 import ScrollProgress from "@/components/ScrollProgress"
-import Marquee from "@/components/Marquee"
 import { introShouldSkip } from "@/lib/intro"
 
 export default function App() {
@@ -30,13 +29,9 @@ export default function App() {
         <Nav />
         <main>
           <Hero ready={ready} />
-          <Marquee text="AI · Systems · Research" />
           <About />
-          <Marquee text="Selected Work" reverse />
           <Projects />
-          <Marquee text="Open Source" />
           <OpenSource />
-          <Marquee text="Get in touch" reverse />
           <Contact />
         </main>
         <Footer />

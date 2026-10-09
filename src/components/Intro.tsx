@@ -8,26 +8,6 @@ const EASE = [0.16, 1, 0.3, 1] as const
 const REVEAL_AT = 1150
 const COMPLETE_AT = 1650
 
-/** 0 → 100 counter. Starts after `delay`, ramps over `duration`. */
-function Counter({ delay, duration }: { delay: number; duration: number }) {
-  const [value, setValue] = useState(0)
-
-  useEffect(() => {
-    let raf = 0
-    let t0 = 0
-    const tick = (now: number) => {
-      if (!t0) t0 = now
-      const p = Math.min(1, Math.max(0, (now - t0 - delay) / duration))
-      setValue(Math.round(p * 100))
-      if (p < 1) raf = requestAnimationFrame(tick)
-    }
-    raf = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(raf)
-  }, [delay, duration])
-
-  return <>{value}</>
-}
-
 export default function Intro({
   onReveal,
   onComplete,
@@ -89,15 +69,6 @@ export default function Intro({
           {profile.name}
         </motion.h1>
       </div>
-
-      <motion.div
-        className="font-serif leading-none text-ink text-[clamp(3.5rem,16vw,13rem)] tabular-nums"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.4, ease: EASE, delay: 0.45 }}
-      >
-        <Counter delay={450} duration={700} />
-      </motion.div>
     </motion.div>
   )
 }
