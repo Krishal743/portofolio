@@ -1,6 +1,7 @@
 import { Reveal } from "./Reveal"
 import { SectionHeading } from "./SectionHeading"
 import Ambient from "./Ambient"
+import ScrollWords from "./ScrollWords"
 import { profile, skillGroups } from "@/data/profile"
 
 export default function About() {
@@ -14,7 +15,14 @@ export default function About() {
           <div className="lg:col-span-7">
             {profile.bio.map((paragraph, i) => (
               <Reveal key={i} delay={i * 0.08} className="text-[1.02rem] leading-relaxed text-muted">
-                <p className={i > 0 ? "mt-5" : ""}>{paragraph}</p>
+                {/* First paragraph gets the scroll-linked word reveal; the
+                    rest stay on a plain Reveal so the page isn't wall-to-wall
+                    motion spans. */}
+                {i === 0 ? (
+                  <ScrollWords text={paragraph} />
+                ) : (
+                  <p className="mt-5">{paragraph}</p>
+                )}
               </Reveal>
             ))}
 

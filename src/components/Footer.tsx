@@ -6,12 +6,10 @@ import Ambient from "./Ambient"
 export default function Footer() {
   return (
     <footer className="relative border-t border-edge/60 bg-bg">
-      <Ambient glow="center" grid={false} className="opacity-60" />
+      <Ambient glow="center" className="opacity-60" />
       <div className="container-portfolio relative flex flex-col gap-6 py-10 md:flex-row md:items-center md:justify-between">
         <p className="font-mono text-[0.68rem] uppercase tracking-[0.25em] text-faint">
           © {new Date().getFullYear()} {profile.name}
-          <span className="mx-2 text-edge">·</span>
-          <span className="text-muted">built with React Bits + taste</span>
         </p>
 
         <div className="flex items-center gap-6">

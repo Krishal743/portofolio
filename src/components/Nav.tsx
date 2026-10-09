@@ -4,8 +4,8 @@ import { profile } from "@/data/profile"
 import { scrollToId } from "@/lib/scroll"
 import SpecularButton from "./SpecularButton"
 
-const NAV_ITEMS = ["About", "Projects", "Contact"] as const
-const NAV_TARGETS = ["about", "projects", "contact"] as const
+const NAV_ITEMS = ["About", "Projects", "Open Source", "Contact"] as const
+const NAV_TARGETS = ["about", "projects", "opensource", "contact"] as const
 
 export default function Nav() {
   const active = useActiveSection()

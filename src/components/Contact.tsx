@@ -5,6 +5,7 @@ import { GithubIcon, LinkedinIcon } from "./BrandIcons"
 import LineWaves from "./LineWaves"
 import { Reveal } from "./Reveal"
 import { SectionHeading } from "./SectionHeading"
+import ScrollWords from "./ScrollWords"
 import { profile } from "@/data/profile"
 
 export default function Contact() {
@@ -46,13 +47,13 @@ export default function Contact() {
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-bg via-bg/85 to-bg" aria-hidden="true" />
 
       <div className="container-portfolio section-pad relative">
-        <SectionHeading index="03" label="contact" title="Let's build something rigorous" />
+        <SectionHeading index="04" label="contact" title="Let's build something rigorous" />
 
         <Reveal delay={0.1}>
-          <p className="mt-8 max-w-2xl text-[0.98rem] leading-relaxed text-muted">
-            Open to AI/ML and software engineering roles, research collaborations, and hard problems worth solving.
-            I usually reply within a day.
-          </p>
+          <ScrollWords
+            text="Open to AI/ML and software engineering roles, research collaborations, and hard problems worth solving. I usually reply within a day."
+            className="mt-8 max-w-2xl text-[0.98rem] leading-relaxed text-muted"
+          />
         </Reveal>
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2">

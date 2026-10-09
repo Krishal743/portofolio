@@ -15,17 +15,22 @@ function FadeUp({
   children,
   delay = 0,
   className,
+  ready = true,
 }: {
   children: ReactNode
   delay?: number
   className?: string
+  /** Held false while the intro curtain is up, so nothing in the hero
+   *  finishes animating behind an opaque overlay. */
+  ready?: boolean
 }) {
   const reduce = useReducedMotion()
+  const hidden = { opacity: 0, y: reduce ? 0 : 24 }
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: reduce ? 0 : 24 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={hidden}
+      animate={ready ? { opacity: 1, y: 0 } : hidden}
       transition={{ duration: 0.8, ease: EASE, delay }}
     >
       {children}
@@ -33,7 +38,7 @@ function FadeUp({
   )
 }
 
-export default function Hero() {
+export default function Hero({ ready = true }: { ready?: boolean }) {
   const reduce = useReducedMotion()
   return (
     <section id="hero" className="relative min-h-[100svh] overflow-hidden">
@@ -54,30 +59,19 @@ export default function Hero() {
         </div>
       )}
 
-      {/* faint technical grid */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.08]"
-        aria-hidden="true"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, #f0ede6 1px, transparent 1px), linear-gradient(to bottom, #f0ede6 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-        }}
-      />
-
       <div className="container-portfolio relative flex min-h-[100svh] flex-col justify-center py-32 lg:py-28">
         <div className="grid items-center gap-14 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <FadeUp delay={0.05}>
+            <FadeUp ready={ready} delay={0.05}>
               <p className="mb-6 flex items-center gap-3 font-mono text-[0.7rem] uppercase tracking-[0.3em] text-muted">
                 <span className="inline-block h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
                 {profile.role} · {profile.location}
               </p>
             </FadeUp>
 
-            <FadeUp delay={0.15}>
+            <FadeUp ready={ready} delay={0.15}>
               <h1 className="font-serif text-5xl leading-[1.02] text-ink text-balance md:text-7xl">
-                {reduce ? (
+                {reduce || !ready ? (
                   profile.name
                 ) : (
                   <DecryptedText
@@ -93,8 +87,8 @@ export default function Hero() {
               </h1>
             </FadeUp>
 
-            <FadeUp delay={0.25}>
-              {reduce ? (
+            <FadeUp ready={ready} delay={0.25}>
+              {reduce || !ready ? (
                 <p className="mt-6 max-w-xl font-serif text-xl leading-snug text-muted text-balance md:text-2xl">
                   {profile.tagline}
                 </p>
@@ -110,14 +104,14 @@ export default function Hero() {
               )}
             </FadeUp>
 
-            <FadeUp delay={0.38}>
+            <FadeUp ready={ready} delay={0.38}>
               <p className="mt-6 max-w-xl text-[0.95rem] leading-relaxed text-muted">
                 Research-backed ML and distributed systems — from IEEE-published work on LLM reliability to streaming
                 pipelines and privacy-preserving federated learning.
               </p>
             </FadeUp>
 
-            <FadeUp delay={0.5}>
+            <FadeUp ready={ready} delay={0.5}>
               <div className="mt-10 flex flex-wrap items-center gap-4">
                 <SpecularButton
                   href={profile.resume}
@@ -127,6 +121,7 @@ export default function Hero() {
                   lineColor="#e8c07d"
                   baseColor="#7a6326"
                   textColor="#f0ede6"
+                  className="font-mono uppercase tracking-[0.15em] text-[0.78rem]"
                   rel="noreferrer"
                 >
                   Résumé
@@ -139,6 +134,7 @@ export default function Hero() {
                   lineColor="#f0ede6"
                   baseColor="#4a4a4a"
                   textColor="#c9c4b8"
+                  className="font-mono uppercase tracking-[0.15em] text-[0.78rem]"
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -147,7 +143,7 @@ export default function Hero() {
               </div>
             </FadeUp>
 
-            <FadeUp delay={0.62}>
+            <FadeUp ready={ready} delay={0.62}>
               <dl className="mt-14 grid max-w-xl grid-cols-1 gap-px overflow-hidden border border-edge bg-edge sm:grid-cols-2">
                 {[
                   { label: "University", value: `${profile.education.school} · ${profile.education.years}` },
@@ -165,7 +161,7 @@ export default function Hero() {
           </div>
 
           <div className="lg:col-span-5">
-            <FadeUp delay={0.35}>
+            <FadeUp ready={ready} delay={0.35}>
               <figure className="overflow-hidden border border-edge bg-surface/60">
                 <div className="flex items-center justify-between border-b border-edge px-4 py-2.5 font-mono text-[0.62rem] uppercase tracking-[0.25em] text-faint">
                   <span>[ system . neural-constellation ]</span>
@@ -202,7 +198,7 @@ export default function Hero() {
         }}
         className="absolute bottom-8 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-3 md:flex"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={{ opacity: ready ? 1 : 0 }}
         transition={{ delay: 1.4, duration: 1 }}
         aria-label="Scroll to about"
       >

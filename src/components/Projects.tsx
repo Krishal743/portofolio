@@ -2,6 +2,7 @@ import SpecularButton from "./SpecularButton"
 import { Reveal } from "./Reveal"
 import { SectionHeading } from "./SectionHeading"
 import Ambient from "./Ambient"
+import ScrollWords from "./ScrollWords"
 import { projects, type Project } from "@/data/projects"
 import type { ReactNode } from "react"
 
@@ -13,14 +14,14 @@ function Chip({ children }: { children: ReactNode }) {
   )
 }
 
-function ProjectCase({ project }: { project: Project }) {
+function ProjectCase({ project, index }: { project: Project; index: number }) {
   return (
     <article className="border-t border-edge/60 py-16 md:py-24">
       <div className="grid gap-10 lg:grid-cols-12">
         <div className="lg:sticky lg:top-28 lg:col-span-3 lg:self-start">
           <Reveal>
             <p className="font-mono text-[0.62rem] uppercase tracking-[0.3em] text-faint">
-              case <span className="text-accent">{project.index}</span>
+              case <span className="text-accent">{String(index).padStart(2, "0")}</span>
             </p>
             <p className="mt-6 font-mono text-sm text-muted">[{project.year}]</p>
           </Reveal>
@@ -116,15 +117,15 @@ export default function Projects() {
         <SectionHeading index="02" label="work" title="Selected projects" />
 
         <Reveal delay={0.1}>
-          <p className="mt-8 max-w-2xl text-[0.98rem] leading-relaxed text-muted">
-            A selection of research and systems work. Each project shows how I approach a problem end-to-end — from
-            defining the question to shipping and measuring the result.
-          </p>
+          <ScrollWords
+            text="A selection of research and systems work. Each project shows how I approach a problem end-to-end — from defining the question to shipping and measuring the result."
+            className="mt-8 max-w-2xl text-[0.98rem] leading-relaxed text-muted"
+          />
         </Reveal>
 
         <div className="mt-4">
-          {projects.map((project) => (
-            <ProjectCase key={project.id} project={project} />
+          {projects.map((project, i) => (
+            <ProjectCase key={project.id} project={project} index={i + 1} />
           ))}
         </div>
       </div>
